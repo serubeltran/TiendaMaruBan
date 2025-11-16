@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { CartContext } from '../context/CartContext'
-import { AuthContext } from '../context/authContext'
+import { AuthContext } from '../context/AuthContext.jsx'
 import { Navbar, Container, Nav, Button, Badge } from 'react-bootstrap'
 
 export default function Header({ onCartClick }) {

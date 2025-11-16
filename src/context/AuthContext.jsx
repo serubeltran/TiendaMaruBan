@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import usuarios from '../api/usuarios'
-import { AuthContext } from './authContext'
+
+export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   // Persistir sesión sólo durante la sesión del navegador usando sessionStorage

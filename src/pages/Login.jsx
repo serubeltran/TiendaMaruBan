@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { AuthContext } from '../context/authContext'
+import { AuthContext } from '../context/AuthContext.jsx'
 
 export default function Login(){
   const [email, setEmail] = useState('susana@test1.com')

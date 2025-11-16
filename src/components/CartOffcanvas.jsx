@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { CartContext } from '../context/CartContext'
-import { AuthContext } from '../context/authContext' // Import correcto
+import { AuthContext } from '../context/AuthContext.jsx' // Import correcto
 import { Offcanvas } from 'react-bootstrap'
 import { Link } from 'react-router-dom' // Para link a login si no autenticado
 
