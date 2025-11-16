@@ -11,8 +11,8 @@ import { ProductsProvider } from './context/ProductsContext'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
-      <CartProvider>
+    <CartProvider>
+      <AuthProvider>
         <ToastProvider>
           <ProductsProvider>
             <BrowserRouter>
@@ -20,7 +20,7 @@ createRoot(document.getElementById('root')).render(
             </BrowserRouter>
           </ProductsProvider>
         </ToastProvider>
-      </CartProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </CartProvider>
   </React.StrictMode>
 )

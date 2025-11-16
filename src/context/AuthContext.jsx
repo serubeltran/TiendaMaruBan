@@ -1,9 +1,12 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react'
 import usuarios from '../api/usuarios'
+import { CartContext } from './CartContext.jsx'
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
+  const { clearCart } = useContext(CartContext)
+
   // Persistir sesión sólo durante la sesión del navegador usando sessionStorage
   const [user, setUser] = useState(() => {
     try {
@@ -32,7 +35,11 @@ export const AuthProvider = ({ children }) => {
   const logout = ()=> {
     setUser(null)
     // Limpiar el carrito al cerrar sesión
-    try { sessionStorage.removeItem('ecom_cart') } catch (e) {}
+    try { 
+      sessionStorage.removeItem('ecom_user')
+      sessionStorage.removeItem('ecom_cart')
+      clearCart()  // ¡Resetea items en memoria!!!!!!!
+    } catch (e) {}
   }
 
   return <AuthContext.Provider value={{user, login, logout}}>{children}</AuthContext.Provider>
