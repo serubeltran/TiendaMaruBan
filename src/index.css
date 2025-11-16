@@ -1,0 +1,70 @@
+/* Basic reset and variables */
+:root{
+  --bg:#f7f7f8;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --accent-600:#1e40af;
+  --radius:8px;
+  --maxw:1100px;
+  --thumb-h: 140px; /* altura por defecto para miniaturas */
+  --thumb-detail-h: 280px; /* altura por defecto para imagen detalle */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%}
+body{font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#111827; padding:20px;}
+
+/* Layout */
+.app{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;min-height:100vh}
+.header{background:var(--card);position:sticky;top:0;z-index:40;border-radius:var(--radius);box-shadow:0 1px 4px rgba(0,0,0,0.03);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.tienda{font-weight:700;color:var(--accent)}
+.nav{display:flex;gap:12px;align-items:center}
+.nav a{color:var(--muted);text-decoration:none;padding:8px;border-radius:6px}
+.nav a.active, .nav a:hover{background:#eef2ff;color:var(--accent-600)}
+
+.container{padding:12px}
+.nosotros{padding:20px 75px}
+
+/* Cards styles (usadas por los componentes, añadimos soporte responsivo) */
+.card{background:var(--card);border-radius:8px;border:1px solid #e6e9ef;display:flex;flex-direction:column;gap:8px;height:100%}
+.card .card-img-top{width:100%;object-fit:cover;border-radius:6px}
+.product-card .p-3{padding:12px}
+
+/* .grid fue reemplazado por utilidades Bootstrap en Home.jsx (row / cols) */
+
+/* Imagen uniforme para tarjetas y carrito */
+.img-uniform{width:100%;object-fit:cover;border-radius:6px;display:block}
+
+/* Aumentar especificidad para asegurar que en el contexto de .card la altura uniforme se aplique */
+.card .img-uniform{height:var(--thumb-h);object-fit:contain;background:var(--card);padding:6px;box-sizing:border-box;object-position:center}
+
+/* Imagen de detalle: más grande y responsiva */
+.img-detail{width:100%;height:auto;max-height:var(--thumb-detail-h);object-fit:contain;display:block;margin:0 auto}
+
+/* Cursor indicativo para imágenes ampliables */
+.img-clickable{cursor:zoom-in}
+
+/* Botones */
+.btn{display:inline-block;padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:white;text-decoration:none;cursor:pointer}
+.btn.secondary{background:transparent;border:1px solid #d1d5db;color:var(--muted)}
+
+/* Controles Header  */
+.header-right{display:flex;gap:12px;align-items:center}
+.cart-count{background:var(--accent);color:white;padding:4px 8px;border-radius:999px;font-size:13px}
+
+/* Forms */
+.form{max-width:420px;background:var(--card);padding:16px;border-radius:8px;border:1px solid #e6e9ef}
+.form label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
+.form input{width:100%;padding:10px;border:1px solid #e6e9ef;border-radius:6px;margin-bottom:10px}
+
+/* Footer */
+.footer{margin-top:auto;padding:12px;text-align:center;color:var(--muted);font-size:14px}
+ 
+/* Responsive */
+@media (max-width:600px){
+  .header{flex-direction:column;gap:8px;align-items:flex-start}
+  .card .card-img-top{max-height:180px}
+  .card .img-uniform{height:120px}
+  .img-detail{max-height:180px}
+}
