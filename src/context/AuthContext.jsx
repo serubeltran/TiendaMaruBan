@@ -1,42 +1,74 @@
-import React, { createContext, useState, useEffect } from 'react' // Quita useContext
-import usuarios from '../api/usuarios'
+// src/context/AuthContext.jsx
+import { createContext, useState, useContext } from "react";
+import { useCart } from "./CartContext";
+import usuarios from "../api/usuarios"; // ← IMPORT CORRECTO
 
-export const AuthContext = createContext()
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Quita: const { clearCart } = useContext(CartContext)
-
+  // Inicialización segura desde localStorage
   const [user, setUser] = useState(() => {
     try {
-      return JSON.parse(sessionStorage.getItem('ecom_user')) || null
+      const raw = localStorage.getItem("ecom_user");
+      if (!raw) return null;
+
+      const parsed = JSON.parse(raw);
+
+      return {
+        id: parsed.id || null,
+        email: parsed.email || "",
+        name: parsed.name || "",
+        role: parsed.role || "user",
+      };
     } catch {
-      return null
+      return null;
     }
-  })
+  });
 
-  useEffect(() => {
-    if (user) sessionStorage.setItem('ecom_user', JSON.stringify(user))
-    else sessionStorage.removeItem('ecom_user')
-  }, [user])
+  const { clearCart } = useCart();
 
-  const login = ({email, password}) => {
-    const found = usuarios.find(u => u.email === email && u.password === password)
-    if(found){
-      const userObj = { id: found.id, email: found.email, name: found.name }
-      if(found.role) userObj.role = found.role
-      setUser(userObj)
-      return { ok:true }
-    }
-    return { ok:false, message: 'Usuario no registrado' }
-  }
+  const [redirectAfterLogin, setRedirectAfterLogin] = useState(null);
+
+  // 🔵 LOGIN usando archivo usuarios.js REAL
+  const login = async (email, password) => {
+    const found = usuarios.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (!found) return false;
+
+    const safeUser = {
+      id: found.id,
+      name: found.name,
+      email: found.email,
+      role: found.role,
+    };
+
+    setUser(safeUser);
+    localStorage.setItem("ecom_user", JSON.stringify(safeUser));
+
+    return true;
+  };
 
   const logout = () => {
-    setUser(null)
-    try { 
-      sessionStorage.removeItem('ecom_user')
-      sessionStorage.removeItem('ecom_cart')
-    } catch (e) {}
-  }
+    clearCart();
+    setUser(null);
+    localStorage.removeItem("ecom_user");
+  };
 
-  return <AuthContext.Provider value={{user, login, logout}}>{children}</AuthContext.Provider>
-}
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        redirectAfterLogin,
+        setRedirectAfterLogin,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);

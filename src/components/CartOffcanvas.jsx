@@ -1,69 +1,136 @@
-import React, { useContext } from 'react'
-import { CartContext } from '../context/CartContext'
-import { AuthContext } from '../context/AuthContext.jsx' // Import correcto
-import { Offcanvas } from 'react-bootstrap'
-import { Link } from 'react-router-dom' // Para link a login si no autenticado
+import React from "react";
+import { Offcanvas, Button } from "react-bootstrap";
+import { FaTrashAlt } from "react-icons/fa";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
-const CartOffcanvas = ({ show, handleClose }) => {
-  const { items, clearCart, total, increaseQuantity, decreaseQuantity } = useContext(CartContext)
-  const { user } = useContext(AuthContext) // Uso real de user
-  const totalCount = items.reduce((s, i) => s + (i.qty || 0), 0)
+export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
+const { cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, total } = useCart();
+const { user } = useAuth();
 
-  const handleCheckout = () => {
-    clearCart()
-  }
-
-  return (
-    <Offcanvas show={show} onHide={handleClose} placement="end">
-      <Offcanvas.Header closeButton>
-        <div>
-          <Offcanvas.Title>Carrito</Offcanvas.Title>
-  <div className="text-muted small mt-1">Cantidad de productos: {totalCount}</div>
-        </div>
-      </Offcanvas.Header>
-      <Offcanvas.Body>
-        {!user ? (
-          <p>Inicia sesión para ver el carrito. <Link to="/login" onClick={handleClose}>Ir a login</Link></p>
-        ) : items.length === 0 ? (
-          <p>Tu carrito está vacío.</p>
-        ) : (
-          <div>
-            {items.map(i => (
-              <div key={i.id} className="card mb-3">
-                <div className="row g-0 align-items-center">
-                  <div className="col-3">
-                    <img src={i.imagen} alt={i.titulo} className="img-fluid rounded img-uniform" />
-                  </div>
-                  <div className="col-9 ps-3">
-                    <h5 className="mb-2">{i.titulo}</h5>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div className="input-group input-group-sm" style={{width: 'auto'}}>
-                        <button className="btn btn-outline-danger" onClick={() => decreaseQuantity(i.id)}>-</button>
-                        <span className="input-group-text">{i.qty}</span>
-                        <button className="btn btn-outline-primary" onClick={() => increaseQuantity(i.id)}>+</button>
-                      </div>
-                      <div className="fw-bold">${(i.precio * i.qty).toFixed(2)}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </Offcanvas.Body>
-      {user && items.length > 0 && (
-        <div className="bg-light p-3 border-top position-sticky bottom-0">
-          <div className="d-flex justify-content-between align-items-center">
-            <strong>Total: ${total.toFixed(2)}</strong>
-            <div>
-              <button className="btn btn-secondary me-2" onClick={clearCart}>Vaciar</button>
-              <button className="btn btn-primary" onClick={handleCheckout}>Finalizar compra</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </Offcanvas>
-  )
+if (!user && show) {
+handleClose();
+onRequireLogin();
+return null;
 }
 
-export default CartOffcanvas
+const handlePay = () => {
+alert("¡Gracias por tu compra!");
+clearCart();
+handleClose();
+};
+
+return ( <Offcanvas show={show} onHide={handleClose} placement="end">
+<Offcanvas.Header closeButton>
+<Offcanvas.Title>Tu carrito</Offcanvas.Title>
+</Offcanvas.Header>
+
+
+  <Offcanvas.Body style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    {cart.length === 0 ? (
+      <p style={{ textAlign: "center", marginTop: 20 }}>
+        El carrito está vacío.
+      </p>
+    ) : (
+      <>
+        <div style={{ flex: 1 }}>
+          {cart.map((item) => (
+            <div
+              key={item.id}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "10px 0",
+                borderBottom: "1px solid #e5e7eb",
+              }}
+            >
+              <img
+                src={item.imagen}
+                alt={item.title}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 6,
+                  objectFit: "cover",
+                  marginRight: 10,
+                }}
+              />
+
+              <div style={{ flex: 1 }}>
+                <strong>{item.title}</strong>
+                <br />
+
+                {/* Precio un renglón arriba */}
+                <span>Precio: ${item.precio.toFixed(2)}</span>
+                <br />
+
+                {/* Subtotal con tamaño menor y negrita */}
+                <span style={{ fontSize: "0.9em", fontWeight: "bold" }}>
+                  Subtotal: ${(item.precio * item.qty).toFixed(2)}
+                </span>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Button
+                  size="sm"
+                  variant="outline-secondary"
+                  onClick={() => decreaseQuantity(item.id)}
+                >
+                  –
+                </Button>
+
+                {/* Espacio fijo de 3 dígitos */}
+                <span style={{ display: "inline-block", width: 30, textAlign: "center" }}>
+                  {item.qty}
+                </span>
+
+                <Button
+                  size="sm"
+                  variant="outline-secondary"
+                  onClick={() => increaseQuantity(item.id)}
+                >
+                  +
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant="danger"
+                  onClick={() => removeFromCart(item.id)}
+                >
+                  <FaTrashAlt />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Botones inferiores */}
+        <div style={{ marginTop: 15 }}>
+          <h5 style={{ textAlign: "right" }}>Total: ${total.toFixed(2)}</h5>
+
+          <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+            <Button
+              variant="danger"
+              style={{ flex: 1 }}
+              onClick={clearCart}
+            >
+              Vaciar carrito
+            </Button>
+
+            <Button
+              variant="success"
+              style={{ flex: 1 }}
+              onClick={handlePay}
+            >
+              Pagar
+            </Button>
+          </div>
+        </div>
+      </>
+    )}
+  </Offcanvas.Body>
+</Offcanvas>
+
+);
+}

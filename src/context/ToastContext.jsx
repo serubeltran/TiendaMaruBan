@@ -31,8 +31,4 @@ export const ToastProvider = ({ children }) => {
   )
 }
 
-// Nota: la presentación (ToastContainer / posición) se hace en el componente
-// donde se quiera mostrar (por ejemplo en `Home.jsx`) para controlar exacto
-// lugar y estilo y evitar problemas con reload/hmr.
-
 export default ToastProvider

@@ -22,10 +22,10 @@ export default function ToastPlacement({ wrapperStyle }){
     return () => window.removeEventListener('resize', compute)
   }, [])
 
-  // Default style (desktop): align to top-right of the container where this component is placed
+  // Estilo pantalla PC
   const defaultStyle = { position: 'absolute', right: 0, top: 0, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 1060 }
 
-  // On small screens, center the toasts below the header and use fixed positioning so they are visible regardless of scroll
+  // Estilo pantallas chicas
   const smallStyle = {
     position: 'fixed',
     top: `${topOffset}px`,

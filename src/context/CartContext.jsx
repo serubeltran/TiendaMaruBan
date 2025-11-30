@@ -1,50 +1,85 @@
-import React, { createContext, useState, useEffect } from 'react'
+import { createContext, useState, useMemo, useContext, useEffect } from "react";
 
-export const CartContext = createContext()
+export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // No inicializar desde localStorage: el carrito debe empezar vacío en cada carga
-    const [items, setItems] = useState(() => {
-      try { return JSON.parse(sessionStorage.getItem('ecom_cart')) || [] } catch { return [] }
-    })
+  const [cart, setCart] = useState(() => {
+    try {
+      const saved = localStorage.getItem("cart");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
-  // Asegurar que cualquier carrito previo en localStorage se elimine al montar
   useEffect(() => {
-    try { localStorage.removeItem('ecom_cart') } catch (e) {}
-  }, [])
-  
-    useEffect(() => {
-      try { sessionStorage.setItem('ecom_cart', JSON.stringify(items)) } catch (e) {}
-    }, [items])
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
-  const addToCart = (producto, qty=1) => {
-    setItems(prev=>{
-      const found = prev.find(p=>p.id===producto.id)
-      if(found){
-        return prev.map(p=> p.id===producto.id ? {...p, qty: p.qty+qty} : p)
+  const addToCart = (product) => {
+    const normalizedProduct = {
+      ...product,
+      imagen: product.imagen || product.IMAGEN || product.Imagen || "",
+    };
+
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === normalizedProduct.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === normalizedProduct.id
+            ? { ...item, qty: item.qty + 1 }
+            : item
+        );
       }
-      return [...prev, {...producto, qty}]
-    })
-  }
-  const removeFromCart = (id) => setItems(prev => prev.filter(p=>p.id!==id))
-  const clearCart = ()=> setItems([])
-  const total = items.reduce((s,p)=> s + p.precio * p.qty, 0)
+      return [...prev, { ...normalizedProduct, qty: 1 }];
+    });
+  };
 
-  // Nuevas funciones para manejar cantidades
+  const removeFromCart = (id) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
+  };
+
   const increaseQuantity = (id) => {
-    setItems(prev => prev.map(p => p.id === id ? { ...p, qty: p.qty + 1 } : p))
-  }
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, qty: item.qty + 1 } : item
+      )
+    );
+  };
 
   const decreaseQuantity = (id) => {
-    setItems(prev => {
-      const found = prev.find(p => p.id === id)
-      if (found && found.qty > 1) {
-        return prev.map(p => p.id === id ? { ...p, qty: p.qty - 1 } : p)
-      } else {
-        return prev.filter(p => p.id !== id)
-      }
-    })
-  }
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.id === id ? { ...item, qty: item.qty - 1 } : item
+        )
+        .filter((item) => item.qty > 0)
+    );
+  };
 
-  return <CartContext.Provider value={{items, addToCart, removeFromCart, clearCart, total, increaseQuantity, decreaseQuantity}}>{children}</CartContext.Provider>
-}
+  const clearCart = () => setCart([]);
+
+  const total = useMemo(
+    () => cart.reduce((sum, item) => sum + item.precio * item.qty, 0),
+    [cart]
+  );
+
+  return (
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        increaseQuantity,
+        decreaseQuantity,
+        clearCart,
+        total,
+        isProductInCart: (id) => cart.some((i) => i.id === id),
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+};
+
+export const useCart = () => useContext(CartContext);

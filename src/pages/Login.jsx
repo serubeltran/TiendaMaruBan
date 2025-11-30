@@ -1,45 +1,90 @@
-import React, { useState, useContext } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext.jsx'
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import usuarios from "../api/usuarios";
 
-export default function Login(){
-  const [email, setEmail] = useState('susana@test1.com')
-  const [password, setPassword] = useState('123456')
-  const [error, setError] = useState(null)
-  const { login } = useContext(AuthContext)
-  const navigate = useNavigate()
-  const location = useLocation()
-  const from = location.state?.from?.pathname || '/'
+export default function Login({ onSuccess }) {
+  const { login, redirectAfterLogin, setRedirectAfterLogin } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e)=>{
-    e.preventDefault()
-    const res = login({email,password})
-    if(res.ok){
-      navigate(from, {replace:true})
-    }else{
-      setError(res.message || 'Error al iniciar sesión.')
-      setTimeout(()=>setError(null),2500)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const found = usuarios.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (!found) {
+      setError("Correo o contraseña incorrectos");
+      return;
     }
-  }
+
+    login({
+      id: found.id,
+      name: found.name,
+      email: found.email,
+      role: found.role,
+    });
+
+    setError("");
+
+    if (redirectAfterLogin === "cart") {
+      setRedirectAfterLogin(null);
+      onSuccess("cart");
+      return;
+    }
+
+    onSuccess();
+  };
 
   return (
-    <main className="container">
-      <h2>Iniciar sesión</h2>
-      <form className="form" onSubmit={handleSubmit}>
-        {error && <div style={{marginBottom:8,color:'#b91c1c',background:'#fff1f2',padding:8,borderRadius:6}}>{error}</div>}
-        <label>Email</label>
-        <input value={email} onChange={e=>setEmail(e.target.value)} />
-        <label>Contraseña</label>
-        <input type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-        <div style={{display:'flex',gap:8,marginTop:8}}>
-          <button className="btn" type="submit">Entrar</button>
-        </div>
-        <p style={{marginTop:10,color:'#6b7280'}}>
-          Credenciales de demo:
-          <br/>Usuario normal: <strong>susana@test1.com</strong> / <strong>123456</strong>
-          <br/>Administrador: <strong>admin@mail.com</strong> / <strong>admin</strong>
-        </p>
+    <div
+      style={{
+        maxWidth: 400,
+        margin: "60px auto",
+        padding: 25,
+        borderRadius: 10,
+        boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+        background: "white",
+      }}
+    >
+      <h3 style={{ textAlign: "center", marginBottom: 20 }}>Iniciar sesión</h3>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          className="form-control mb-3"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          className="form-control mb-3"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        {error && (
+          <p style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+            {error}
+          </p>
+        )}
+
+        <button type="submit" className="btn btn-primary w-100">
+          Entrar
+        </button>
       </form>
-    </main>
-  )
+
+      <div style={{ marginTop: 20, fontSize: 14, textAlign: "center" }}>
+        <strong>Credenciales de prueba:</strong>
+        <br /> admin@mail.com / admin <br /> susana@test1.com / 123456
+      </div>
+    </div>
+  );
 }
