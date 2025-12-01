@@ -191,8 +191,10 @@ export default function Stock(){
                           </td>
                           <td>${Number(p.precio).toFixed(2)}</td>
                           <td>
-                            <button className="btn btn-sm btn-outline-primary me-2" onClick={() => openEdit(p)}>Editar</button>
-                            <button className="btn btn-sm btn-danger" onClick={() => askDelete(p)}>Eliminar</button>
+                            <div style={{display:'flex', gap:'6px', flexWrap:'wrap'}}>
+                              <button className="btn btn-outline-primary" style={{fontSize:'12px', padding:'6px 12px'}} onClick={() => openEdit(p)}>Editar</button>
+                              <button className="btn btn-danger" style={{fontSize:'12px', padding:'6px 12px'}} onClick={() => askDelete(p)}>Eliminar</button>
+                            </div>
                           </td>
                         </tr>
                       ))}

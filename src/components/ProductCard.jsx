@@ -16,7 +16,7 @@ export default function ProductCard({producto, onAdd, isInCart}) {
 
     timeoutRef.current = setTimeout(() => {
       setShowAdded(false)
-    }, 2000)
+    }, 1000)
   }
 
   useEffect(() => {
@@ -26,9 +26,6 @@ export default function ProductCard({producto, onAdd, isInCart}) {
       }
     }
   }, [])
-
-  // DEBUG: loguear el producto que recibe el card (remover luego)
-  console.log('[DEBUG] ProductCard recibe producto:', producto)
 
   return (
     <article className="card h-100 d-flex flex-column product-card">
@@ -44,13 +41,15 @@ export default function ProductCard({producto, onAdd, isInCart}) {
         />
       </div>
 
-      <div className="p-3 d-flex flex-column" style={{flex:1}}>
+      <div className="p-2 p-sm-3 d-flex flex-column" style={{flex:1}}>
         <h5 className="card-title" style={{fontSize:16, marginBottom:6}}>
           {producto.titulo}
         </h5>
 
-        <div className="d-flex align-items-center justify-content-between mt-auto">
-          <span className="fw-bold text-success">${producto.precio}</span>
+        <div className="d-flex align-items-center justify-content-between gap-2 mt-auto flex-wrap">
+          <span className="fw-bold text-success">
+            ${producto.precio}
+          </span>
 
           <button
             className={`btn btn-sm flex-shrink-0 ${

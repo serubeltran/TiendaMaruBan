@@ -225,3 +225,12 @@ body{
   transition: transform 0.25s ease;
 }
 
+/* Responsive adjustments for Stock page buttons */
+@media (max-width: 768px) {
+  /* Reducir padding de botones en pantallas medianas y pequeñas */
+  .table td .btn {
+    padding: 4px 8px !important;
+    font-size: 11px;
+  }
+}
+
