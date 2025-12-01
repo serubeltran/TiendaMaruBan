@@ -14,7 +14,7 @@ export const ToastProvider = ({ children }) => {
       message,
       autohide: options.autohide ?? true,
       delay: options.delay ?? 2000,
-      bg: options.bg || null
+      bg: options.bg || 'primary'
     }
     setToasts((t) => [toast, ...t])
     return id

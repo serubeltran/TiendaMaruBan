@@ -57,6 +57,84 @@ export const ProductsProvider = ({ children }) => {
     [products]
   );
 
+  const addProduct = async (data) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          producto: data.titulo,
+          precio: data.precio,
+          imagen: data.imagen,
+          descripcion: data.descripcion
+        })
+      });
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      const newProduct = await response.json();
+      const transformedProduct = {
+        id: newProduct.id,
+        titulo: newProduct.producto,
+        precio: Number(newProduct.precio),
+        imagen: newProduct.imagen,
+        descripcion: newProduct.descripcion
+      };
+      setProducts(prev => [...prev, transformedProduct]);
+      return { ok: true };
+    } catch (err) {
+      console.error('Error al agregar producto:', err);
+      return { ok: false, error: err.message };
+    }
+  };
+
+  const updateProduct = async (id, data) => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          producto: data.titulo,
+          precio: data.precio,
+          imagen: data.imagen,
+          descripcion: data.descripcion
+        })
+      });
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      const updatedProduct = await response.json();
+      const transformedProduct = {
+        id: updatedProduct.id,
+        titulo: updatedProduct.producto,
+        precio: Number(updatedProduct.precio),
+        imagen: updatedProduct.imagen,
+        descripcion: updatedProduct.descripcion
+      };
+      setProducts(prev => prev.map(p => p.id === id ? transformedProduct : p));
+      return { ok: true };
+    } catch (err) {
+      console.error('Error al actualizar producto:', err);
+      return { ok: false, error: err.message };
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      setProducts(prev => prev.filter(p => p.id !== id));
+      return { ok: true };
+    } catch (err) {
+      console.error('Error al eliminar producto:', err);
+      return { ok: false, error: err.message };
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -67,7 +145,10 @@ export const ProductsProvider = ({ children }) => {
         products,
         loading,
         error,
-        getById
+        getById,
+        addProduct,
+        updateProduct,
+        deleteProduct
       }}
     >
       {children}

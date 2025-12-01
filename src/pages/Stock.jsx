@@ -11,12 +11,26 @@ function ProductForm({ initial, onSave, onCancel }){
   const [descripcion, setDescripcion] = useState(initial?.descripcion || '')
   const [errors, setErrors] = useState({})
 
-  const validate = () => {
-    const e = {}
-    if(!titulo.trim()) e.titulo = 'El título es requerido'
-    const p = parseFloat(precio)
-    if(Number.isNaN(p) || !isFinite(p)) e.precio = 'El precio debe ser numérico'
-    if(!descripcion || descripcion.length < 20 || descripcion.length > 150) e.descripcion = 'La descripción debe tener entre 20 y 150 caracteres'
+  const validate = (field = null) => {
+    const e = { ...errors }
+    
+    if(!field || field === 'titulo') {
+      if(!titulo.trim()) e.titulo = 'El título es requerido'
+      else if(titulo.trim().length < 3) e.titulo = 'El título debe tener al menos 3 caracteres'
+      else delete e.titulo
+    }
+    
+    if(!field || field === 'precio') {
+      const p = parseFloat(precio)
+      if(Number.isNaN(p) || !isFinite(p) || p <= 0) e.precio = 'El precio debe ser un número mayor que cero'
+      else delete e.precio
+    }
+    
+    if(!field || field === 'descripcion') {
+      if(!descripcion || descripcion.length < 20 || descripcion.length > 150) e.descripcion = 'La descripción debe tener entre 20 y 150 caracteres'
+      else delete e.descripcion
+    }
+    
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -31,12 +45,26 @@ function ProductForm({ initial, onSave, onCancel }){
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-2">
         <Form.Label>Título</Form.Label>
-        <Form.Control value={titulo} onChange={e=>setTitulo(e.target.value)} />
+        <Form.Control 
+          value={titulo} 
+          onChange={e=>setTitulo(e.target.value)} 
+          onBlur={() => validate('titulo')}
+        />
         {errors.titulo && <div className="text-danger small">{errors.titulo}</div>}
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Precio</Form.Label>
-        <Form.Control value={precio} onChange={e=>setPrecio(e.target.value)} />
+        <div className="input-group">
+          <span className="input-group-text">$</span>
+          <Form.Control 
+            type="number" 
+            step="0.01" 
+            min="0" 
+            value={precio} 
+            onChange={e=>setPrecio(e.target.value)} 
+            onBlur={() => validate('precio')}
+          />
+        </div>
         {errors.precio && <div className="text-danger small">{errors.precio}</div>}
       </Form.Group>
       <Form.Group className="mb-2">
@@ -45,7 +73,13 @@ function ProductForm({ initial, onSave, onCancel }){
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Descripción</Form.Label>
-        <Form.Control as="textarea" rows={3} value={descripcion} onChange={e=>setDescripcion(e.target.value)} />
+        <Form.Control 
+          as="textarea" 
+          rows={3} 
+          value={descripcion} 
+          onChange={e=>setDescripcion(e.target.value)} 
+          onBlur={() => validate('descripcion')}
+        />
         {errors.descripcion && <div className="text-danger small">{errors.descripcion}</div>}
       </Form.Group>
       <div className="d-flex justify-content-end gap-2 mt-3">
@@ -133,7 +167,7 @@ export default function Stock(){
               <thead>
                 <tr>
                   <th>Imagen</th>
-                  <th>Título</th>
+                  <th>Producto</th>
                   <th>Precio</th>
                   <th>Acciones</th>
                 </tr>
@@ -150,8 +184,11 @@ export default function Stock(){
                     <>
                       {slice.map(p => (
                         <tr key={p.id}>
-                          <td style={{width:120}}><img src={p.imagen} alt={p.titulo} className="img-fluid img-uniform" /></td>
-                          <td>{p.titulo}</td>
+                          <td style={{width:90}}><img src={p.imagen} alt={p.titulo} className="img-fluid" style={{width:100, height:100, objectFit:'cover', borderRadius:4}} /></td>
+                          <td>
+                            <div><strong>{p.titulo}</strong></div>
+                            <div style={{fontSize:'0.85em', color:'#666', marginTop:4}}>{p.descripcion}</div>
+                          </td>
                           <td>${Number(p.precio).toFixed(2)}</td>
                           <td>
                             <button className="btn btn-sm btn-outline-primary me-2" onClick={() => openEdit(p)}>Editar</button>

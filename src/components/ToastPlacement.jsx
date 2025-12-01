@@ -22,8 +22,8 @@ export default function ToastPlacement({ wrapperStyle }){
     return () => window.removeEventListener('resize', compute)
   }, [])
 
-  // Estilo pantalla PC
-  const defaultStyle = { position: 'absolute', right: 0, top: 0, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 1060 }
+  // Estilo pantalla PC - Centrado
+  const defaultStyle = { position: 'fixed', top: 12, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', gap: 8, zIndex: 1060, alignItems: 'center' }
 
   // Estilo pantallas chicas
   const smallStyle = {
@@ -52,7 +52,7 @@ export default function ToastPlacement({ wrapperStyle }){
           delay={t.delay}
           style={{ display: 'inline-block', width: 'auto', maxWidth: 420 }}
         >
-          <Toast.Body style={{ fontSize: 13, padding: '6px 10px', display: 'inline-block' }}>{t.message}</Toast.Body>
+          <Toast.Body style={{ fontSize: 13, padding: '6px 10px', display: 'inline-block', color: 'white' }}>{t.message}</Toast.Body>
         </Toast>
       ))}
     </div>
