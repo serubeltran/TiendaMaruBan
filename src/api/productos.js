@@ -1,3 +1,7 @@
+// Se usaba en la versión original.
+// Ahora ProductsContext carga los productos directamente - fetch().
+
+
 // Carga los productos desde la API y los guarda en el array `productos`
 
 const productos = [];
