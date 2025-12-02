@@ -1,5 +1,6 @@
+// Manejo de errores y mensajes al respecto
+
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 export default class ErrorBoundary extends React.Component {
   constructor(props){
@@ -12,7 +13,7 @@ export default class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, info){
-    // Puedes enviar este error a un servicio de logging si lo deseas
+    // Muestra mensaje por la consola
     console.error('Error capturado por ErrorBoundary:', error, info)
   }
 

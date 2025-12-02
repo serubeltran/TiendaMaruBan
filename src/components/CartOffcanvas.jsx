@@ -1,3 +1,5 @@
+// Renderización del carrito
+
 import React, { useContext, useState } from "react";
 import { Offcanvas, Button, Modal } from "react-bootstrap";
 import { FaTrashAlt } from "react-icons/fa";
@@ -17,17 +19,20 @@ export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
     return null;
   }
 
+  // Función pagar (simulado)
   const handlePay = () => {
     alert("¡Gracias por tu compra!");
     clearCart();
     handleClose();
   };
 
+  // Función eliminar producto
   const handleRemoveProduct = (productId, productTitle) => {
     removeFromCart(productId);
     showToast(`${productTitle} eliminado del carrito`, { delay: 2000, bg: 'warning' });
   };
 
+  // Función botón menos + eliminar
   const handleDecreaseQuantity = (productId, newQty, productTitle) => {
     decreaseQuantity(productId);
     // Si la cantidad llega a 0, mostrar mensaje de eliminación
@@ -36,12 +41,13 @@ export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
     }
   };
 
+  // Función vaciar carrito + confirmación
   const handleClearCart = () => {
     clearCart();
     showToast('Carrito vaciado correctamente', { delay: 2000, bg: 'info' });
     handleClose();
   };
-
+  
   const confirmClearCart = () => {
     setShowConfirmClear(false);
     handleClearCart();

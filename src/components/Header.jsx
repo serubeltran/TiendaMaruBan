@@ -1,3 +1,5 @@
+// Header con navegación, login y carrito
+
 import React, { useContext } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { CartContext } from '../context/CartContext'
@@ -18,10 +20,6 @@ export default function Header({ onCartClick, onLoginClick }) {
     logout()
     navigate('/')
   }
-
-
-  console.log("Usuario actual:", user)
-
 
   return (
     <Navbar
@@ -45,7 +43,7 @@ export default function Header({ onCartClick, onLoginClick }) {
 
           <div className="d-flex align-items-center gap-2">
 
-            {/* 🔹 Usuario sin cambios */}
+            {/* Usuario logueado */}
             {user ? (
               <>
                 <span className="text-muted">Hola, {user.name}</span>
@@ -67,7 +65,7 @@ export default function Header({ onCartClick, onLoginClick }) {
               </Button>
             )}
 
-            {/* 🔹 Botón del carrito mejorado */}
+            {/* Botón del carrito */}
             <Button
               variant="primary"
               size="sm"

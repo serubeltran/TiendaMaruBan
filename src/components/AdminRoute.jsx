@@ -1,3 +1,5 @@
+// Controla el login y el acceso a la ruta protegida (Control de stock)
+
 import React, { useContext } from 'react'
 import { Navigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext.jsx'

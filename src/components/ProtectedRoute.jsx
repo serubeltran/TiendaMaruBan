@@ -1,3 +1,5 @@
+// Control del login para rutas protegidas
+
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";

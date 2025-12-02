@@ -44,14 +44,44 @@ body{
   /* Evita que el contenido lo empuje */
 }
 
-.tienda{font-weight:700;color:var(--accent)}
-.nav{display:flex;gap:12px;align-items:center}
+.tienda{
+  font-weight:700;
+  color:var(--accent);
+  font-size:1.25rem;
+  letter-spacing:-0.5px;
+}
+
+.nav{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
 .nav a{
   color:var(--muted);
   text-decoration:none;
-  padding:8px;
+  padding:8px 12px;
   border-radius:6px;
+  transition: all 0.3s ease;
+  font-weight:500;
+  position:relative;
 }
+
+.nav a::after{
+  content:'';
+  position:absolute;
+  bottom:-2px;
+  left:12px;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition: width 0.3s ease;
+}
+
+.nav a:hover::after{
+  width:calc(100% - 24px);
+}
+
 .nav a.active, .nav a:hover{
   background:#eef2ff;
   color:var(--accent-600);
@@ -168,11 +198,92 @@ body{
 /* Footer */
 .footer{
   margin-top:auto;
-  padding:12px;
-  text-align:center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   color:var(--muted);
-  font-size:14px;
-  background-color:#ffffff;
+  border-top:2px solid #e5e7eb;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+}
+
+.footer-title{
+  color:var(--accent);
+  font-weight:700;
+  font-size:1.1rem;
+  position:relative;
+  padding-bottom:8px;
+}
+
+.footer-title::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:40px;
+  height:3px;
+  background:var(--accent);
+  border-radius:2px;
+}
+
+@media (max-width:768px){
+  .footer-title::after{
+    display:none;
+  }
+}
+
+.footer-link{
+  color:var(--muted);
+  font-size:0.95rem;
+  transition: all 0.3s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+@media (max-width:768px){
+  .footer-link{
+    justify-content:flex-start;
+  }
+}
+
+.footer-link:hover{
+  color:var(--accent);
+  transform:translateX(4px);
+}
+
+.footer-link a:hover{
+  color:var(--accent);
+}
+
+.footer-social-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background-color:rgba(37, 99, 235, 0.1);
+  color:var(--accent);
+  transition: all 0.3s ease;
+  text-decoration:none;
+}
+
+.footer-social-link:hover{
+  background-color:var(--accent);
+  color:#ffffff;
+  transform:translateY(-4px);
+  box-shadow:0 8px 12px rgba(37, 99, 235, 0.3);
+}
+
+.footer-copyright{
+  color:#374151;
+  font-size:0.95rem;
+  font-weight:500;
+}
+
+.footer-disclaimer{
+  color:var(--muted);
+  font-size:0.85rem;
+  font-style:italic;
 }
 
 /* Responsive */

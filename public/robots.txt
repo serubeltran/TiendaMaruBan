@@ -3,4 +3,4 @@ Allow: /
 Disallow: /stock
 Disallow: /login
 
-Sitemap: https://tiendaruban.com/sitemap.xml
+Sitemap: https://tienda-maruban.vercel.app/sitemap.xml
