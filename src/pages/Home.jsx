@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ProductsContext } from "../context/ProductsContext";
 import { CartContext } from "../context/CartContext";
 import ProductCard from "../components/ProductCard";
@@ -6,6 +6,31 @@ import ProductCard from "../components/ProductCard";
 const Home = () => {
   const { products, loading, error } = useContext(ProductsContext);
   const { addToCart, isProductInCart } = useContext(CartContext);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
+
+  // Cargar solo los primeros 12 productos inicialmente para mejorar LCP
+  useEffect(() => {
+    if (products && products.length > 0) {
+      setDisplayedProducts(products.slice(0, 12));
+    }
+  }, [products]);
+
+  // Cargar más productos cuando el usuario desplaza
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        // Cargar más productos cuando el usuario está cerca del final
+        setDisplayedProducts((prev) => {
+          const nextIndex = prev.length;
+          const newProducts = products.slice(nextIndex, nextIndex + 8);
+          return newProducts.length > 0 ? [...prev, ...newProducts] : prev;
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [products]);
 
   const handleAdd = (product) => {
     addToCart(product);
@@ -42,7 +67,7 @@ const Home = () => {
   return (
     <main className="container py-4">
       <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-        {products.map((p) => (
+        {displayedProducts.map((p) => (
           <div className="col" key={p.id}>
             <ProductCard
               producto={p}

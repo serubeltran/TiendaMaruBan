@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import ProductDetail from "./pages/ProductDetail";
-import Stock from "./pages/Stock";
-import Login from "./pages/Login";
-import Nosotros from "./pages/Nosotros";
 import CartOffcanvas from "./components/CartOffcanvas";
 import ToastPlacement from "./components/ToastPlacement";
 import AdminRoute from "./components/AdminRoute";
 import ErrorBoundary from "./components/ErrorBoundary";
 import LoginOffcanvas from "./components/LoginOffcanvas";
+
+// Lazy load para páginas no críticas
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+const Stock = lazy(() => import("./pages/Stock"));
+const Login = lazy(() => import("./pages/Login"));
+const Nosotros = lazy(() => import("./pages/Nosotros"));
+
+// Componente de fallback para carga
+const LoadingFallback = () => (
+  <div className="container py-5 text-center">
+    <div className="spinner-border" role="status">
+      <span className="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+);
 
 export default function App() {
   const [showCart, setShowCart] = useState(false);
@@ -49,20 +60,22 @@ export default function App() {
 
       <div className="container">
         <ErrorBoundary>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/producto/:id" element={<ProductDetail />} />
-            <Route path="/nosotros" element={<Nosotros />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/stock"
-              element={
-                <AdminRoute>
-                  <Stock />
-                </AdminRoute>
-              }
-            />
-          </Routes>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/producto/:id" element={<ProductDetail />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/stock"
+                element={
+                  <AdminRoute>
+                    <Stock />
+                  </AdminRoute>
+                }
+              />
+            </Routes>
+          </Suspense>
         </ErrorBoundary>
       </div>
 

@@ -37,7 +37,10 @@ export default function ProductCard({producto, onAdd, isInCart}) {
         <img 
           src={producto.imagen} 
           alt={producto.titulo} 
-          className="card-img-top img-fluid img-uniform" 
+          className="card-img-top img-fluid img-uniform"
+          loading="lazy"
+          decoding="async"
+          fetchpriority="low"
         />
       </div>
 
@@ -58,7 +61,7 @@ export default function ProductCard({producto, onAdd, isInCart}) {
             onClick={handleAddClick}
             disabled={showAdded}
             style={{
-              minWidth: '100px',
+              width: '100px',
               transition: 'all 0.3s ease'
             }}
           >

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /stock
+Disallow: /login
+
+Sitemap: https://tiendaruban.com/sitemap.xml
