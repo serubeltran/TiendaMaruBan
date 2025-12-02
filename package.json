@@ -19,6 +19,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.4",
     "purgecss": "^7.0.2",
+    "terser": "^5.44.1",
     "vite": "^5.0.0"
   }
 }
