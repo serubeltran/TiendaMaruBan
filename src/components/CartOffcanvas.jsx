@@ -1,4 +1,4 @@
-// Renderización del carrito
+// Renderización del carrito - Offcanvas - Panel lateral
 
 import React, { useContext, useState } from "react";
 import { Offcanvas, Button, Modal } from "react-bootstrap";
@@ -78,7 +78,7 @@ export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
                     padding: "12px 0",
                     borderBottom: "1px solid #e5e7eb",
                     gap: 12,
-                    flexWrap: 'wrap'
+                    flexWrap: 'nowrap'
                   }}
                 >
                   {/* Imagen más grande */}
@@ -107,7 +107,7 @@ export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
                   </div>
 
                   {/* Controles de cantidad */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: 'nowrap', width: '100%', justifyContent: 'flex-end' }}>
                     <Button
                       size="sm"
                       variant="outline-secondary"

@@ -8,18 +8,18 @@ const Home = () => {
   const { addToCart, isProductInCart } = useContext(CartContext);
   const [displayedProducts, setDisplayedProducts] = useState([]);
 
-  // Cargar solo los primeros 12 productos inicialmente para mejorar LCP
+  // Carga solo los primeros 12 productos inicialmente para mejorar LCP
   useEffect(() => {
     if (products && products.length > 0) {
       setDisplayedProducts(products.slice(0, 12));
     }
   }, [products]);
 
-  // Cargar más productos cuando el usuario desplaza
+  // Carga más productos cuando el usuario desplaza
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-        // Cargar más productos cuando el usuario está cerca del final
+        // Carga más productos cuando el usuario está cerca del final
         setDisplayedProducts((prev) => {
           const nextIndex = prev.length;
           const newProducts = products.slice(nextIndex, nextIndex + 8);
@@ -36,7 +36,7 @@ const Home = () => {
     addToCart(product);
   };
 
-  // ⛔ Loading
+  // Carga de Productos
   if (loading) {
     return (
       <main className="container py-4">
@@ -45,7 +45,7 @@ const Home = () => {
     );
   }
 
-  // ⛔ Error durante fetch
+  // Error durante fetch
   if (error) {
     return (
       <main className="container py-4">
@@ -54,7 +54,7 @@ const Home = () => {
     );
   }
 
-  // ⛔ Lista vacía o undefined
+  // Lista vacía o undefined
   if (!products || products.length === 0) {
     return (
       <main className="container py-4">
@@ -63,7 +63,6 @@ const Home = () => {
     );
   }
 
-  // 👍 Render normal
   return (
     <main className="container py-4">
       <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">

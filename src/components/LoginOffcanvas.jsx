@@ -1,4 +1,6 @@
-// src/components/LoginOffcanvas.jsx
+// Offcanvas para el login
+// Valida usuario y se cierra
+
 import React, { useState, useEffect, useContext } from "react";
 import { Offcanvas, Button, Spinner } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext";
@@ -11,7 +13,7 @@ export default function LoginOffcanvas({ show, onClose, onLoginSuccess }) {
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState("");
 
-  // 🔹 Resetear formulario cuando se cierra Login
+  // Resetea formulario cuando se cierra Login
   useEffect(() => {
     if (!show) {
       setEmail("");
@@ -21,7 +23,7 @@ export default function LoginOffcanvas({ show, onClose, onLoginSuccess }) {
     }
   }, [show]);
 
-  // 🔹 Cuando usuario inicia sesión → cerrar + notificar éxito
+  // Validación del usuario
   useEffect(() => {
     if (user) {
       if (typeof onLoginSuccess === "function") {
@@ -43,7 +45,7 @@ export default function LoginOffcanvas({ show, onClose, onLoginSuccess }) {
       if (!ok) {
         setLocalError("Credenciales incorrectas");
       }
-      // Si ok === true, el useEffect se encargará del cierre y notificación
+      // Si ok === true, el useEffect cierra y notifica
     } catch (err) {
       setLoading(false);
       setLocalError("Error al iniciar sesión");

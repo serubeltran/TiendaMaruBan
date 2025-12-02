@@ -44,6 +44,7 @@ body{
   /* Evita que el contenido lo empuje */
 }
 
+/* Logo Tienda Maruban */
 .tienda{
   font-weight:700;
   color:var(--accent);
@@ -51,41 +52,6 @@ body{
   letter-spacing:-0.5px;
 }
 
-.nav{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-
-.nav a{
-  color:var(--muted);
-  text-decoration:none;
-  padding:8px 12px;
-  border-radius:6px;
-  transition: all 0.3s ease;
-  font-weight:500;
-  position:relative;
-}
-
-.nav a::after{
-  content:'';
-  position:absolute;
-  bottom:-2px;
-  left:12px;
-  width:0;
-  height:2px;
-  background:var(--accent);
-  transition: width 0.3s ease;
-}
-
-.nav a:hover::after{
-  width:calc(100% - 24px);
-}
-
-.nav a.active, .nav a:hover{
-  background:#eef2ff;
-  color:var(--accent-600);
-}
 
 .container{
   padding:12px;
@@ -107,7 +73,7 @@ body{
   overflow:hidden;
 }
 
-/* Asegura proporción uniforme de imágenes */
+/* Igual tamaño imágenes */
 .card-img-top,
 .img-uniform{
   width:100%;
@@ -361,5 +327,18 @@ body{
 .btn {
   will-change: background-color, color;
   transform: translateZ(0);  /* GPU acceleration */
+}
+
+/* Efecto hover para links de navegación en el header */
+.nav-link.text-secondary:hover {
+  color: #2563eb !important; /* azul */
+  text-decoration: underline #2563eb; /* Subrayado rojo ondulado */
+  text-decoration-thickness: 1px;
+}
+
+/* Efecto para el link activo */
+.nav-link.active {
+  color: #2563eb !important;
+  text-decoration: none;
 }
 

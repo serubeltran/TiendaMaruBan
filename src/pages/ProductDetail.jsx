@@ -1,3 +1,5 @@
+// Muestra el detalle de un producto seleccionado
+
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useProducts } from "../context/ProductsContext";
@@ -27,29 +29,44 @@ export default function ProductDetail() {
 
   return (
     <main className="container py-4">
-      <div className="mb-3 text-end">
-        <Link to="/" className="btn btn-secondary">Volver</Link>
+      <div className="mb-3 d-flex align-items-center justify-content-between">
+        <h2 className="mb-0 text-primary">{producto.TITULO || producto.titulo}</h2>
+        <Link to="/" className="btn btn-outline-primary shadow-sm ms-3">Volver</Link>
       </div>
-
-      <h2>{producto.TITULO || producto.titulo}</h2>
 
       {/* Imagen normal (chica, zoom-in) */}
       <img
         src={producto.imagen}
         alt={producto.TITULO || producto.titulo}
-        className="img-detail"
+        className="img-detail shadow-sm"
+        style={{ cursor: "zoom-in" }}
         onClick={handleZoomToggle}
+        tabIndex={0}
+        role="button"
+        aria-label="Ampliar imagen"
       />
 
-      <p><strong>Precio:</strong> ${producto.precio}</p>
-      <p>{producto.descripcion}</p>
+      <p className="h4 text-primary mb-2"><strong>Precio:</strong> ${producto.precio}</p>
+      <p className="mb-4 text-muted">{producto.descripcion}</p>
 
       {/* Overlay oscuro con zoom */}
       <div
         className={`image-overlay ${zoomOpen ? "visible" : ""}`}
         onClick={handleZoomToggle}
+        style={{ transition: "opacity 0.25s ease" }}
       >
         <img src={producto.imagen} alt="Zoom" />
+        {zoomOpen && (
+          <button
+            type="button"
+            className="btn btn-light position-absolute top-0 end-0 m-3"
+            style={{ zIndex: 10001 }}
+            onClick={handleZoomToggle}
+            aria-label="Cerrar zoom"
+          >
+            &times;
+          </button>
+        )}
       </div>
     </main>
   );

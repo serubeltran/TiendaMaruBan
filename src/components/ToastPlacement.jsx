@@ -1,3 +1,5 @@
+// Ubicación y renderizado de los toasts
+
 import React, { useContext, useEffect, useState } from 'react'
 import { Toast } from 'react-bootstrap'
 import { ToastContext } from '../context/ToastContext'

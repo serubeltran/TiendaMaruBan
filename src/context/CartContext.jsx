@@ -1,3 +1,5 @@
+// Contexto para el carrito
+
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
 
 export const CartContext = createContext();
@@ -35,10 +37,12 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // Eliminar el producto
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
+  // Aumentar cantidad carrito
   const increaseQuantity = (id) => {
     setCart((prev) =>
       prev.map((item) =>
@@ -47,6 +51,7 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  // Disminuir cantidad carrito
   const decreaseQuantity = (id) => {
     setCart((prev) =>
       prev

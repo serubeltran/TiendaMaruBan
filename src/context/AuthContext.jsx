@@ -1,12 +1,13 @@
-// src/context/AuthContext.jsx
+// Contexto para validar usuario
+
 import { createContext, useState, useContext } from "react";
 import { useCart } from "./CartContext";
-import usuarios from "../api/usuarios"; // ← IMPORT CORRECTO
+import usuarios from "../api/usuarios"; 
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Inicialización segura desde localStorage
+  // Inicialización desde localStorage
   const [user, setUser] = useState(() => {
     try {
       const raw = localStorage.getItem("ecom_user");
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const [redirectAfterLogin, setRedirectAfterLogin] = useState(null);
 
-  // 🔵 LOGIN usando archivo usuarios.js REAL
+  // LOGIN usando archivo usuarios.js REAL
   const login = async (email, password) => {
     const found = usuarios.find(
       (u) => u.email === email && u.password === password

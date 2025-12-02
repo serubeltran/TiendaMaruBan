@@ -1,3 +1,5 @@
+// Contexto para el manejo de toasts/alertas
+
 import React, { createContext, useState, useCallback } from 'react'
 
 export const ToastContext = createContext()

@@ -1,3 +1,5 @@
+// Control de stock (CRUD de productos)
+
 import React, { useState } from 'react'
 import { useProducts } from '../context/ProductsContext'
 import { ToastContext } from '../context/ToastContext'
@@ -208,7 +210,7 @@ export default function Stock(){
             </table>
           </div>
 
-          {/* paginación sencilla */}
+          {/* Paginación */}
           {products.length > 0 && (
             (() => {
               const filtered = products.filter(p => p.titulo.toLowerCase().includes(query.toLowerCase()))

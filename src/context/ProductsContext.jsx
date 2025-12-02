@@ -1,3 +1,5 @@
+// Contexto para el manejo de productos
+
 import React, {
   createContext,
   useState,
@@ -24,10 +26,7 @@ export const ProductsProvider = ({ children }) => {
         throw new Error(`Error HTTP: ${response.status}`);
       }
       const data = await response.json();
-
-      console.log("[DEBUG] API PRODUCTS:", data);
-
-      // 🔥 Convertimos precio a number aquí
+      // Convertir precio a número
       const productosTransformados = data.map((item) => ({
         id: item.id,
         titulo: item.producto,
@@ -35,9 +34,6 @@ export const ProductsProvider = ({ children }) => {
         imagen: item.imagen,
         descripcion: item.descripcion,
       }));
-
-      console.log("[DEBUG] TRANSFORMED PRODUCTS:", productosTransformados);
-
       setProducts(productosTransformados);
       setError(null);
     } catch (err) {
@@ -48,15 +44,15 @@ export const ProductsProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("[DEBUG] PRODUCTS IN CONTEXT (STATE):", products);
-  }, [products]);
 
   const getById = useCallback(
     (id) => products.find((p) => p.id === id),
     [products]
   );
 
+  // FUNCIONES PARA EL CRUD
+
+  // Agregar producto
   const addProduct = async (data) => {
     try {
       const response = await fetch(API_URL, {
@@ -88,6 +84,7 @@ export const ProductsProvider = ({ children }) => {
     }
   };
 
+  // Actualizar producto
   const updateProduct = async (id, data) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
@@ -119,6 +116,7 @@ export const ProductsProvider = ({ children }) => {
     }
   };
 
+  // Eliminar producto
   const deleteProduct = async (id) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {

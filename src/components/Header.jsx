@@ -23,7 +23,7 @@ export default function Header({ onCartClick, onLoginClick }) {
 
   return (
     <Navbar
-      bg="white"
+      bg="light"
       expand="md"
       className="mb-3 shadow-sm rounded"
       sticky="top"
@@ -34,10 +34,10 @@ export default function Header({ onCartClick, onLoginClick }) {
         <Navbar.Toggle aria-controls="main-navbar" />
         <Navbar.Collapse id="main-navbar">
           <Nav className="me-auto">
-            <Nav.Link as={NavLink} to="/" end>Inicio</Nav.Link>
-            <Nav.Link as={NavLink} to="/nosotros">Nosotros</Nav.Link>
+            <Nav.Link as={NavLink} to="/" end className="text-secondary">Inicio</Nav.Link>
+            <Nav.Link as={NavLink} to="/nosotros" className="text-secondary">Nosotros</Nav.Link>
             {user && user.role === 'admin' && (
-              <Nav.Link as={NavLink} to="/stock">Stock</Nav.Link>
+              <Nav.Link as={NavLink} to="/stock" className="text-secondary">Stock</Nav.Link>
             )}
           </Nav>
 
