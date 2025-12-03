@@ -1,4 +1,4 @@
-// Se usaba en la versión original.
+// Se usaba en la versión original. Ya no se usa.
 // Ahora ProductsContext carga los productos directamente - fetch().
 
 
