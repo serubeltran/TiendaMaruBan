@@ -5,6 +5,7 @@ import { useProducts } from '../context/ProductsContext'
 import { ToastContext } from '../context/ToastContext'
 import { useContext } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
+import { formatPrecioAR } from '../utils/formatPrecioAR';
 
 function ProductForm({ initial, onSave, onCancel }){
   const [titulo, setTitulo] = useState(initial?.titulo || '')
@@ -191,7 +192,7 @@ export default function Stock(){
                             <div><strong>{p.titulo}</strong></div>
                             <div style={{fontSize:'0.85em', color:'#666', marginTop:4}}>{p.descripcion}</div>
                           </td>
-                          <td>${Number(p.precio).toFixed(2)}</td>
+                          <td>{formatPrecioAR(p.precio)}</td>
                           <td>
                             <div style={{display:'flex', gap:'6px', flexWrap:'wrap'}}>
                               <button className="btn btn-outline-primary" style={{fontSize:'12px', padding:'6px 12px'}} onClick={() => openEdit(p)}>Editar</button>

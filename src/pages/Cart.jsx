@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { formatPrecioAR } from '../utils/formatPrecioAR';
 
 const Cart = () => {
   const {
@@ -67,7 +68,7 @@ const Cart = () => {
 
                       {/* Subtotal */}
                       <td className="text-end fw-bold">
-                        ${item.precio * item.qty}
+                        {formatPrecioAR(item.precio * item.qty)}
                       </td>
                     </tr>
                   ))}
@@ -79,7 +80,7 @@ const Cart = () => {
           {/* Total final */}
           <div className="card p-3 shadow-sm">
             <h4 className="fw-bold text-end">
-              Total: <span className="text-success">${total}</span>
+              Total: <span className="text-success">{formatPrecioAR(total)}</span>
             </h4>
 
             <div className="d-flex justify-content-end mt-3 gap-2">

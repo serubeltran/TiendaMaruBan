@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useProducts } from "../context/ProductsContext";
+import { formatPrecioAR } from '../utils/formatPrecioAR';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -46,7 +47,7 @@ export default function ProductDetail() {
         aria-label="Ampliar imagen"
       />
 
-      <p className="h4 text-primary mb-2"><strong>Precio:</strong> ${producto.precio}</p>
+      <p className="h4 text-primary mb-2"><strong>Precio:</strong> {formatPrecioAR(producto.precio)}</p>
       <p className="mb-4 text-muted">{producto.descripcion}</p>
 
       {/* Overlay oscuro con zoom */}

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
+import { formatPrecioAR } from '../utils/formatPrecioAR'
 
 export default function ProductCard({producto, onAdd, isInCart}) {
   const navigate = useNavigate()
@@ -51,7 +52,7 @@ export default function ProductCard({producto, onAdd, isInCart}) {
 
         <div className="d-flex align-items-center justify-content-between gap-2 mt-auto flex-wrap">
           <span className="fw-bold text-success">
-            ${producto.precio}
+            {formatPrecioAR(producto.precio)}
           </span>
 
           <button

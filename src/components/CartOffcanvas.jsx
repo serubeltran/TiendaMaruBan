@@ -6,6 +6,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { ToastContext } from "../context/ToastContext";
+import { formatPrecioAR } from '../utils/formatPrecioAR';
 
 export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
   const { cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, total } = useCart();
@@ -98,11 +99,11 @@ export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
                     <span style={{ fontSize: "clamp(0.75em, 2.5vw, 0.9em)", fontStyle: "italic", fontWeight: 600 }}>{item.titulo}</span>
 
                     <span style={{ fontSize: "clamp(0.75em, 2.5vw, 0.85em)" }}>
-                      Precio: ${item.precio.toFixed(2)}
+                      Precio: {formatPrecioAR(item.precio)}
                     </span>
 
                     <span style={{ fontSize: "clamp(0.8em, 2.5vw, 0.9em)" }}>
-                      Subtotal: ${(item.precio * item.qty).toFixed(2)}
+                      Subtotal: {formatPrecioAR(item.precio * item.qty)}
                     </span>
                   </div>
 
@@ -153,7 +154,7 @@ export default function CartOffcanvas({ show, handleClose, onRequireLogin }) {
 
               {/* Total alineado a la izquierda */}
               <h5 style={{ textAlign: "left", fontSize: 'clamp(1em, 3.5vw, 1.25em)' }}>
-                Total a pagar: ${total.toFixed(2)}
+                Total a pagar: {formatPrecioAR(total)}
               </h5>
 
               <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
